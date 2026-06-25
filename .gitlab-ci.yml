@@ -1,0 +1,45 @@
+image: python:3.9
+
+stages:
+  - deploy
+
+variables:
+  SSH_USER: root
+  SSH_SERVER_IP: 64.227.167.249
+  REMOTE_PATH: /opt/keyword-suggestion-llm-python
+  VENV_PATH: /opt/keyword-suggestion-llm-python/venv
+  SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+
+deploy:
+  stage: deploy
+  only:
+    - qa
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - apt-get update && apt-get install -y unzip zip
+    - python -m venv $VENV_PATH
+    - if [ -d "$VENV_PATH" ]; then echo "Virtual environment created"; else echo "Failed to create virtual environment"; exit 1; fi
+    - source $VENV_PATH/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - echo "Deploying Django app to production"
+    - rm -rf .git .gitignore .gitlab-ci.yml
+    - zip -rq app.zip ./ > /dev/null 2>&1
+    - echo "Uploading app.zip to the server"
+    - scp -o StrictHostKeyChecking=no app.zip $SSH_USER@$SSH_SERVER_IP:$REMOTE_PATH
+    - echo "Checking if the remote directory exists"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER_IP "if [ ! -d '$REMOTE_PATH' ]; then echo 'Directory $REMOTE_PATH does not exist'; exit 1; fi"
+    - echo "Unzipping the app.zip file on the server"
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_SERVER_IP "cd $REMOTE_PATH && unzip -qo app.zip > /dev/null 2>&1 || (echo 'Unzip failed' && exit 1)"
+    - echo "Restarting the app service"
+    - ssh -i ~/.ssh/id_rsa $SSH_USER@$SSH_SERVER_IP "cd $REMOTE_PATH && source $VENV_PATH/bin/activate && sudo systemctl restart myapp.service"
+  tags:
+    - docker_runner
+  environment:
+    name: production

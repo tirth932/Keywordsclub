@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Finder Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="./static/style.css">
+    <style>
+        .copy-button span {
+            transition: opacity 0.5s ease;
+        }
+        .copy-button {
+            text-decoration: none; /* Removes the underline */
+            color: #000;
+        }
+
+        .copy-button img {
+            vertical-align: middle; /* Ensures the image aligns with the text */
+        }
+
+        .light-text {
+            font-weight: lighter;
+            color: #888; /* or any color you prefer for light text */
+        }
+
+        .btn-copied {
+            color: #000000;
+        }
+
+        .btn-copied img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box-loader" id="blockUi" style="display: none;">
+        <div class="loader animate">
+          <svg class="circular" viewBox="50 50 100 100">
+            <circle class="path" cx="75" cy="75" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            <line class="line" x1="127" x2="150" y1="0" y2="0" stroke="black" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+    </div>
+
+    <section >
+    <div class="bg-blue">
+    <div class="container">
+        <div class="row">
+         <div class="col-md-12">
+            <div class="d-md-flex align-items-center justify-content-between">
+                <div class="logo-div my-4">
+                    <a href="/"><img src="./static/images/white.svg" class="w-75"></a>
+                </div>
+                <div class="text-div d-md-block d-none">
+                    <!-- <h3 class="text-white">Free Keyword Tool</h3> -->
+                </div>
+            </div>
+         </div>
+         </div>
+         <div class="row align-items-center">
+         <div class="col-md-6 mt-md-3 mb-md-5">
+            <div class="search-div-main">
+                <h2 class="text-white heading">Create Blog Post</h2>
+                <p class="text-white fs-22 mt-3">Discover new keywords and performance data to use in your site content, Google Ads campaigns and more.</p>
+                <span class="border-white-2 mt-5 mb-3"></span>
+                <div class="search-input-div">
+                    <label class="mb-2">Enter a keyword or website URL to get a Blog</label>
+                    <input type="text" name="article-text" id="article-text" placeholder="Enter a keyword to get a Blog" class="w-100 search-input">
+                    <input style="display:none;"  type="number" name="num-words" id="num-words" placeholder="Enter a number to get a Blog" class="w-100 search-input">
+                    <button class="body-scroll btn btn-orenge mt-3 text-end float-end" id="extract-keywords">Create Blog Post</button>
+                </div>
+            </div>
+         </div>
+
+         <div class="col-md-6 my-md-5 my-3"  id="keyword-div">
+                 <div class="card suggest-keyword-card">
+                     <div class="card-header">
+                         Blog Post
+                         <a href="javascript:void(0)" class="copy-button" style="float: right; display: none;" id="copy-btn">
+                           <img src="./static/images/copy.png" style="cursor: pointer; width: 27px; height: 27px;">
+                           <span class="light-text">Copy</span>
+                        </a>
+                     </div>
+                     <div class="card-body">
+                        <div class="ms-3 d-md-flex w-100 flex-main-new" id="keyword-list">
+                            <div class="first-time-keyword py-5 text-center w-100">
+                                <h4>YOU CAN FIND YOUR BLOG POST HERE</h4>
+                            </div>
+                        </div>
+
+                     </div>
+                 </div>
+         </div>
+
+        </div>
+        </div>
+    </div>
+
+    </section>
+
+    <section class="about-sec mb-5">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="heading-main">
+                        <h2>About Keywords Club</h2>
+                     </div>
+                        <p class="mt-5 fs-20 text-black">Welcome to Keywords Club, the ultimate keyword suggestion tool designed to elevate your SEO game. Whether you're a content creator, digital marketer, or business owner, Keywords Club simplifies the process of finding relevant, high-impact keywords to drive organic traffic to your website.</p>
+
+                        <p class="fs-20 text-black">With a user-friendly interface and advanced algorithms, Keywords Club offers personalized suggestions, search trends, and competitor insights to help you stay ahead in the digital space. Say goodbye to guesswork and hello to data-driven strategies that deliver measurable results. Try Keywords Club today and unlock the potential of targeted content with the right keywords at your fingertips.</p>
+                     </div>
+                    </div>
+                </div>
+
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        $("#extract-keywords").click(function(){
+            $("body").css("overflow", "hidden");
+            $("#blockUi").show();
+            var articleText = $("#article-text").val();
+            var numWords = $("#num-words").val();
+            if (!articleText.trim()) {
+                alert("Please enter article text.");
+                window.location.href = '/blog';
+                return;
+            }
+
+            function getQueryParam(param) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Get the keyword and number of words from URL parameters
+
+
+
+            var url, data;
+            url = `${window.location.origin}/create_blog_post/`;
+            data = JSON.stringify({
+                article_text: articleText,
+                num_words: numWords
+            });
+            console.log(data)
+
+            $.ajax({
+                url: url,
+                method: "POST",
+                contentType: "application/json",
+                data: data,
+                success: function (response) {
+                  //   var formattedResponse = response.blog_post.replace(/\n/g, "<br>");
+                    var formattedResponse = response.blog_post;
+                    console.log(formattedResponse);
+                    formattedResponse = formattedResponse.split("\n").join("<br>");
+
+
+                    $("#keyword-list").html(formattedResponse);
+                    $("#blockUi").hide();
+                    $("#article-text").val("");
+                    $("#num-words").val("");
+                    $("#copy-btn").show();
+                    $("body").css("overflow", "auto");
+
+                },
+                error: function() {
+                    alert("Error extracting keywords. Please try again.");
+                    window.location.href = '/blog';
+                    $("body").css("overflow", "auto");
+
+                }
+            });
+        });
+        $("#article-text").keydown(function(event) {
+              if (event.key === "Enter") {
+                    event.preventDefault(); // Prevent default form submission behavior
+                    $("#extract-keywords").click(); // Trigger the button click
+              }
+        });
+
+        // Copy functionality
+        $("#copy-btn").click(function() {
+            var content = $("#keyword-list").html();
+            var textContent = content.replace(/<br\s*\/?>/gi, " ");
+            var tempInput = $("<textarea>");
+            $("body").append(tempInput);
+            tempInput.val(textContent).select();
+            document.execCommand("copy");
+            tempInput.remove();
+
+            // Change image and text on copy
+            $("#copy-btn img").attr("src", "./static/images/check.png");
+            $("#copy-btn span").text("Copied");
+
+            // Revert back to original 'copy.png' after 2 seconds
+            setTimeout(() => {
+                $("#copy-btn img").attr("src", "./static/images/copy.png");
+                $("#copy-btn span").text("copy");
+            }, 2000);
+        });
+
+           // Function to get query parameters from URL
+    function getQueryParam(param) {
+        var urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // Get the keyword and number of words from URL parameters
+    var keyword = getQueryParam("article_text");
+    var numWords = getQueryParam("wordCount");
+    var bolean = getQueryParam("bolean");
+
+    // Pre-populate the inputs with values from the URL
+    if (keyword) {
+        $("#article-text").val(keyword);
+    }
+    if (numWords) {
+        $("#num-words").val(numWords);
+    }
+    if (bolean) {
+        if (bolean === "True") {  // Check if bolean is true
+        // Trigger the button click event to create the blog post
+        console.log(bolean)
+        $("#extract-keywords").click();
+
+    }
+    }
+
+    </script>
+</body>
+</html>

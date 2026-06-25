@@ -1,0 +1,15 @@
+fastapi~=0.115.5
+pydantic~=2.9.2
+keybert~=0.8.5
+langchain_huggingface
+spacy~=3.8.2
+yake~=0.4.8
+transformers~=4.46.3
+rake_nltk
+nltk~=3.9.1
+indicnlp~=0.0.1
+indic-nlp-library
+python-dotenv~=1.0.1
+rake-nltk~=1.0.6
+openai~=1.58.1
+uvicorn~=0.32.1
