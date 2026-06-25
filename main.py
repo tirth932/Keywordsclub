@@ -18,11 +18,17 @@ load_dotenv(BASE_DIR / ".env")
 def get_openai_api_key() -> str:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
+        for name, value in os.environ.items():
+            if name.upper() == "OPENAI_API_KEY" and value:
+                api_key = value
+                break
+    if not api_key:
         raise HTTPException(
             status_code=500,
             detail=(
-                "OpenAI API key not set. Create a .env file in the project root with "
-                "OPENAI_API_KEY=your-key-here, then restart the server."
+                "OpenAI API key not set. Add OPENAI_API_KEY in Vercel → Settings → "
+                "Environment Variables (exact name, all caps), then redeploy. "
+                "For local dev, add OPENAI_API_KEY=your-key-here to a .env file."
             ),
         )
     return api_key
