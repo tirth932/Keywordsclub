@@ -3,8 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from model.bert import extract_keywords_bert_
-from model.yark import extract_keywords_yake_
 from model.huggingface import keyword_fetch_
 from model.blog import create_blog_post_
 from pathlib import Path
@@ -29,9 +27,10 @@ def get_openai_api_key() -> str:
         )
     return api_key
 
-app = FastAPI(docs_url=None,  # Optionally hide docs to make the app more secure
+app = FastAPI(
+    docs_url=None,
     redoc_url=None,
-    max_body_size=40000000000,)
+)
 
 # Configure CORS
 app.add_middleware(
@@ -109,15 +108,27 @@ async def extract_keywords(request: KeywordRequest):
 @app.post("/extract_keywords_bert/")
 async def extract_keywords_bert(request: KeywordRequest):
    try:
+        from model.bert import extract_keywords_bert_
         keywords = extract_keywords_bert_(request.article_text)
         return {"keywords": keywords}
+   except ImportError:
+        raise HTTPException(
+            status_code=503,
+            detail="BERT keyword extraction is not available in this deployment.",
+        )
    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/extract_keywords_yake/")
 async def extract_keywords_yake(request: KeywordRequest):
-    print(request.article_text)
-    keywords = extract_keywords_yake_(request.article_text)
-    return {"keywords": keywords}
+    try:
+        from model.yark import extract_keywords_yake_
+        keywords = extract_keywords_yake_(request.article_text)
+        return {"keywords": keywords}
+    except ImportError:
+        raise HTTPException(
+            status_code=503,
+            detail="YAKE keyword extraction is not available in this deployment.",
+        )
 
