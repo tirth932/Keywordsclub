@@ -96,7 +96,7 @@ async def create_blog_post(request: KeywordRequest):
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
     
 
-@app.post("/extract_keywords/")
+@app.post("/extract_keywords")
 async def extract_keywords(request: KeywordRequest):
     try:
         keywords = keyword_fetch_(get_openai_api_key(), request.article_text)

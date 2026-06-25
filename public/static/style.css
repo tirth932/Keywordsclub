@@ -1,0 +1,359 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.body-scroll {
+    overflow: hidden;
+}
+
+.bg-blue {
+    background-color: #004AAD;
+    height: 120vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Allow stacking of elements vertically on smaller screens */
+    margin-top:0;
+    padding-top:0px;
+
+    position: relative;
+    padding-bottom: 80px; /* Add enough padding to avoid overlap */
+}
+
+.fs-22 {
+    font-size: 22px;
+}
+
+.search-div-main .heading {
+    font-size: 40px;
+}
+
+.search-div-main .border-white-2 {
+    height: 2px;
+    background-color: #fff;
+    width: 100%;
+    display: block;
+}
+
+.search-div-main .search-input-div label {
+    font-size: 20px;
+    color: #fff;
+}
+
+.search-div-main .search-input-div .search-input {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-orenge {
+    background-color: #FF6100;
+    border-radius: 5px;
+    padding: 10px 25px;
+    color: #fff;
+    font-weight: 500;
+    border: 1px solid #FF6100;
+}
+
+.btn-orenge:hover {
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    color: #fff;
+    font-weight: 500;
+}
+.suggest-keyword-card {
+    max-height: 300px; /* Limit the height to stay within bg-blue */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    border-radius: 10px; /* Add rounded corners for better appearance */
+}
+
+.suggest-keyword-card .card-header {
+    background-color: transparent;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.suggest-keyword-card .card-body {
+    max-height: 310px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.flex-main-new {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.flex-main-new p {
+    flex: 1 1 45%; /* Each item takes 45% of the row width */
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.heading-main {
+    font-size: 35px;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    text-align: center; /* Center the heading text */
+}
+
+.heading-main::before {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+    height: 4px;
+    width: 10%;
+    background: #004AAD;
+    margin: 0 auto;
+    right: 0;
+}
+
+.fs-20 {
+    font-size: 20px;
+}
+
+.logo-div img {
+    width: 100%;
+    max-width: 100%; /* Ensure the logo image is responsive */
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .search-div-main .heading {
+        font-size: 35px;
+    }
+
+    .search-div-main p {
+        font-size: 18px;
+    }
+
+    .search-div-main .search-input-div label {
+        font-size: 14px;
+    }
+
+    .about-sec p {
+        font-size: 16px;
+    }
+
+    .heading-main {
+        font-size: 30px; /* Smaller font for smaller screens */
+    }
+
+    .heading-main::before {
+        width: 20%; /* Increase width of underline for small screens */
+    }
+
+    .flex-main-new p {
+        flex: 1 1 100%; /* Ensure that items stack vertically on smaller screens */
+        margin-bottom: 15px; /* Increased space between stacked items */
+    }
+}
+
+.box-loader {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    background-color: #000000be;
+    height: 120vh;
+}
+
+.loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 150px;
+    overflow: hidden;
+}
+
+.loader:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+}
+
+.loader.animate .circle {
+    animation: rotate 2s linear infinite;
+}
+
+.loader.animate .path {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+}
+
+.loader.animate .line {
+    animation: line 0.5s ease-in-out;
+}
+
+.circular {
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.path {
+    stroke-linecap: round;
+    stroke: #fff;
+}
+
+.line {
+    stroke-dasharray: 0;
+    stroke-dashoffset: 0;
+    stroke: #fff;
+    transform: rotate(45deg);
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+
+@keyframes color {
+    0% {
+        stroke: #fff;
+    }
+    100% {
+        stroke: #fff;
+    }
+}
+
+@keyframes line {
+    to {
+        stroke-dashoffset: 1000;
+    }
+}
+
+#keywords {
+    width: 100%;
+    font-size: 16px;
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.no-copy {
+    user-select: none;
+}
+
+#keyword-div {
+    margin-top: 20px;
+    margin-bottom: 0; /* Remove extra margin */
+}
+#keyword-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Add space between rows */
+    padding: 10px;
+    margin: 0;
+}
+
+.keyword-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures text and icons are spaced properly */
+    padding: 5px 10px; /* Optional: Adds padding for better readability */
+    border: 1px solid #ddd; /* Optional: Adds a border for clarity */
+    border-radius: 5px; /* Optional: Makes the container look smoother */
+}
+.first-time-keyword {
+    padding: 20px;
+    margin: 0;
+}
+@media (max-width: 768px) {
+    .suggest-keyword-card {
+        max-height: 250px;
+    }
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.keyword-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the pen and copy icons */
+}
+
+.action-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.text-div {
+    text-align: center; /* Ensure proper alignment */
+}
+
+.text-div h1 a {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+     /* Example button color */
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .d-md-block {
+        display: block !important; /* Ensure the text-div is visible on smaller screens */
+    }
+
+    .text-div h1 a {
+        font-size: 16px; /* Adjust font size for smaller screens */
+        padding: 8px 15px; /* Adjust padding */
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .d-md-flex {
+        flex-direction: column !important; /* Stack elements vertically */
+    }
+
+    .align-items-center {
+        align-items: flex-start !important; /* Align elements to start */
+    }
+}
