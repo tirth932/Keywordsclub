@@ -1,6 +1,3 @@
-
-
-
 import openai
 import re
 
