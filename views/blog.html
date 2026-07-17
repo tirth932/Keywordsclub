@@ -3,234 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keyword Finder Tool</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="./static/style.css">
-    <style>
-        .copy-button span {
-            transition: opacity 0.5s ease;
-        }
-        .copy-button {
-            text-decoration: none; /* Removes the underline */
-            color: #000;
-        }
-
-        .copy-button img {
-            vertical-align: middle; /* Ensures the image aligns with the text */
-        }
-
-        .light-text {
-            font-weight: lighter;
-            color: #888; /* or any color you prefer for light text */
-        }
-
-        .btn-copied {
-            color: #000000;
-        }
-
-        .btn-copied img {
-            width: 20px;
-            height: 20px;
-        }
-    </style>
+    <title>Blog Generator — Keywords Club</title>
+    <meta name="description" content="Generate SEO-ready blog posts from any keyword with AI. Free blog writer by Keywords Club.">
+    <meta property="og:title" content="Blog Generator — Keywords Club">
+    <meta property="og:description" content="Generate SEO-ready blog posts from any keyword with AI.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="./static/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZZ4L7ES3N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EZZ4L7ES3N');
+    </script>
+    <script src="./static/app.js" defer></script>
 </head>
 <body>
-    <div class="box-loader" id="blockUi" style="display: none;">
-        <div class="loader animate">
-          <svg class="circular" viewBox="50 50 100 100">
-            <circle class="path" cx="75" cy="75" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
-            <line class="line" x1="127" x2="150" y1="0" y2="0" stroke="black" stroke-width="2" stroke-linecap="round" />
-          </svg>
+    <canvas id="particle-canvas"></canvas>
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="/" class="nav-logo" aria-label="Keywords Club home">
+                <img src="./static/images/white.svg" alt="Keywords Club">
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Keyword Finder</a>
+                <a href="/blog" class="nav-link active">Blog Generator</a>
+                <a href="/" class="nav-cta">Find Keywords</a>
+            </div>
         </div>
-    </div>
+    </nav>
 
-    <section >
-    <div class="bg-blue">
-    <div class="container">
-        <div class="row">
-         <div class="col-md-12">
-            <div class="d-md-flex align-items-center justify-content-between">
-                <div class="logo-div my-4">
-                    <a href="/"><img src="./static/images/white.svg" class="w-75"></a>
-                </div>
-                <div class="text-div d-md-block d-none">
-                    <!-- <h3 class="text-white">Free Keyword Tool</h3> -->
-                </div>
-            </div>
-         </div>
-         </div>
-         <div class="row align-items-center">
-         <div class="col-md-6 mt-md-3 mb-md-5">
-            <div class="search-div-main">
-                <h2 class="text-white heading">Create Blog Post</h2>
-                <p class="text-white fs-22 mt-3">Discover new keywords and performance data to use in your site content, Google Ads campaigns and more.</p>
-                <span class="border-white-2 mt-5 mb-3"></span>
-                <div class="search-input-div">
-                    <label class="mb-2">Enter a keyword or website URL to get a Blog</label>
-                    <input type="text" name="article-text" id="article-text" placeholder="Enter a keyword to get a Blog" class="w-100 search-input">
-                    <input style="display:none;"  type="number" name="num-words" id="num-words" placeholder="Enter a number to get a Blog" class="w-100 search-input">
-                    <button class="body-scroll btn btn-orenge mt-3 text-end float-end" id="extract-keywords">Create Blog Post</button>
-                </div>
-            </div>
-         </div>
+    <header class="hero" style="padding-bottom: 20px;">
+        <div class="container">
+            <div class="hero-badge reveal"><span class="pulse-dot"></span> AI Blog Writer</div>
+            <h1 class="reveal">Turn keywords into<br><span class="grad-text">ready-to-publish blogs</span></h1>
+            <p class="sub reveal delay-1">Give us a keyword and a word count — get a clean, structured, SEO-friendly blog post you can copy in one click.</p>
+        </div>
+    </header>
 
-         <div class="col-md-6 my-md-5 my-3"  id="keyword-div">
-                 <div class="card suggest-keyword-card">
-                     <div class="card-header">
-                         Blog Post
-                         <a href="javascript:void(0)" class="copy-button" style="float: right; display: none;" id="copy-btn">
-                           <img src="./static/images/copy.png" style="cursor: pointer; width: 27px; height: 27px;">
-                           <span class="light-text">Copy</span>
-                        </a>
-                     </div>
-                     <div class="card-body">
-                        <div class="ms-3 d-md-flex w-100 flex-main-new" id="keyword-list">
-                            <div class="first-time-keyword py-5 text-center w-100">
-                                <h4>YOU CAN FIND YOUR BLOG POST HERE</h4>
-                            </div>
+    <main class="container">
+        <div class="blog-workspace">
+            <!-- Composer panel -->
+            <section class="glass panel reveal">
+                <h2 class="panel-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#pg1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <defs><linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                        <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                    </svg>
+                    Create Blog Post
+                </h2>
+                <p class="panel-desc">Enter a keyword or topic and we'll draft a full blog post for you.</p>
+
+                <label class="field-label" for="article-text">Keyword or topic</label>
+                <div class="input-wrap">
+                    <input type="text" id="article-text" name="article-text" placeholder="e.g. sustainable fashion trends" autocomplete="off">
+                </div>
+
+                <label class="field-label" for="num-words" style="margin-top: 20px;">Word count <span style="text-transform: none; letter-spacing: 0;">(optional, max 1500)</span></label>
+                <div class="input-wrap">
+                    <input type="number" id="num-words" name="num-words" min="1" max="1500" placeholder="e.g. 800">
+                </div>
+
+                <button class="btn-glow" id="create-blog" style="margin-top: 24px; align-self: flex-end;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Generate Blog Post
+                </button>
+            </section>
+
+            <!-- Output panel -->
+            <section class="glass blog-output reveal delay-1">
+                <div class="blog-toolbar">
+                    <div class="blog-meta">
+                        <span class="meta-badge" id="badge-words" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                            <span id="word-count-label"></span>
+                        </span>
+                        <span class="meta-badge" id="badge-time" style="display: none;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span id="read-time-label"></span>
+                        </span>
+                        <span id="toolbar-title" style="font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--text);">Blog Post</span>
+                    </div>
+                    <button class="btn-ghost" id="copy-btn" style="display: none;">
+                        <svg id="copy-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        <span id="copy-label">Copy</span>
+                    </button>
+                </div>
+                <div class="blog-content" id="blog-content">
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                         </div>
-
-                     </div>
-                 </div>
-         </div>
-
-        </div>
-        </div>
-    </div>
-
-    </section>
-
-    <section class="about-sec mb-5">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="heading-main">
-                        <h2>About Keywords Club</h2>
-                     </div>
-                        <p class="mt-5 fs-20 text-black">Welcome to Keywords Club, the ultimate keyword suggestion tool designed to elevate your SEO game. Whether you're a content creator, digital marketer, or business owner, Keywords Club simplifies the process of finding relevant, high-impact keywords to drive organic traffic to your website.</p>
-
-                        <p class="fs-20 text-black">With a user-friendly interface and advanced algorithms, Keywords Club offers personalized suggestions, search trends, and competitor insights to help you stay ahead in the digital space. Say goodbye to guesswork and hello to data-driven strategies that deliver measurable results. Try Keywords Club today and unlock the potential of targeted content with the right keywords at your fingertips.</p>
-                     </div>
+                        <p>Your generated blog post will appear here.<br>Enter a keyword to begin.</p>
                     </div>
                 </div>
+            </section>
+        </div>
+    </main>
 
-    </section>
+    <footer class="footer">
+        <div class="container">
+            &copy; <span id="year"></span> <span class="grad-text">Keywords Club</span> — AI keyword research &amp; content generation
+        </div>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("year").textContent = new Date().getFullYear();
 
-        $("#extract-keywords").click(function(){
-            $("body").css("overflow", "hidden");
-            $("#blockUi").show();
-            var articleText = $("#article-text").val();
-            var numWords = $("#num-words").val();
-            if (!articleText.trim()) {
-                alert("Please enter article text.");
-                window.location.href = '/blog';
+        var topicInput = document.getElementById("article-text");
+        var wordsInput = document.getElementById("num-words");
+        var createBtn = document.getElementById("create-blog");
+        var content = document.getElementById("blog-content");
+        var copyBtn = document.getElementById("copy-btn");
+        var copyIcon = document.getElementById("copy-icon");
+        var copyLabel = document.getElementById("copy-label");
+        var badgeWords = document.getElementById("badge-words");
+        var badgeTime = document.getElementById("badge-time");
+        var stopStatus = null;
+        var plainText = "";
+
+        var STATUS_MESSAGES = [
+            "Outlining the structure…",
+            "Writing the introduction…",
+            "Expanding key sections…",
+            "Polishing the conclusion…"
+        ];
+
+        var COPY_SVG = '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>';
+        var CHECK_SVG = '<polyline points="20 6 9 17 4 12"/>';
+
+        function showLoading() {
+            copyBtn.style.display = "none";
+            badgeWords.style.display = "none";
+            badgeTime.style.display = "none";
+            content.innerHTML =
+                '<div class="progress-track"><div class="progress-fill"></div></div>' +
+                '<div class="status-text"><span class="spin-ring"></span><span id="status-msg"></span></div>' +
+                '<div class="skeleton-line title"></div>' +
+                '<div class="skeleton-line"></div><div class="skeleton-line w-90"></div>' +
+                '<div class="skeleton-line w-80"></div><div class="skeleton-line"></div>' +
+                '<div class="skeleton-line w-60"></div>';
+            stopStatus = KC.cycleStatus(document.getElementById("status-msg"), STATUS_MESSAGES);
+        }
+
+        function stopLoading() {
+            if (stopStatus) { stopStatus(); stopStatus = null; }
+        }
+
+        // Heuristic: short lines without ending punctuation are headings
+        function isHeading(line) {
+            return line.length < 70 && !/[.!?,;:]$/.test(line) && line.split(" ").length <= 10;
+        }
+
+        function renderBlog(text) {
+            plainText = text;
+            var lines = text.split("\n").map(function (l) { return l.trim(); }).filter(Boolean);
+            content.innerHTML = "";
+
+            var wordIndex = 0;
+            var STAGGER = 0.012; // seconds per word for the typewriter reveal
+            var MAX_DELAY = 6;   // cap so very long posts finish revealing quickly
+
+            lines.forEach(function (line, li) {
+                var el;
+                if (li === 0) {
+                    el = document.createElement("h2");
+                    el.className = "bc-title";
+                } else if (isHeading(line)) {
+                    el = document.createElement("h3");
+                    el.className = "bc-heading";
+                } else {
+                    el = document.createElement("p");
+                }
+
+                line.split(/\s+/).forEach(function (word) {
+                    var span = document.createElement("span");
+                    span.className = "word";
+                    span.textContent = word + " ";
+                    span.style.animationDelay = Math.min(wordIndex * STAGGER, MAX_DELAY) + "s";
+                    wordIndex++;
+                    el.appendChild(span);
+                });
+                content.appendChild(el);
+            });
+
+            var wordCount = text.split(/\s+/).filter(Boolean).length;
+            var readMins = Math.max(1, Math.round(wordCount / 200));
+            document.getElementById("word-count-label").textContent = wordCount + " words";
+            document.getElementById("read-time-label").textContent = readMins + " min read";
+            badgeWords.style.display = "inline-flex";
+            badgeTime.style.display = "inline-flex";
+            copyBtn.style.display = "inline-flex";
+        }
+
+        function generate() {
+            var topic = topicInput.value.trim();
+            if (!topic) {
+                KC.toast("Please enter a keyword or topic first.", "error");
+                topicInput.focus();
+                return;
+            }
+            var count = wordsInput.value.trim();
+            if (count && (isNaN(count) || parseInt(count, 10) <= 0)) {
+                KC.toast("Word count must be a positive number.", "error");
+                wordsInput.focus();
+                return;
+            }
+            if (count && parseInt(count, 10) > 1500) {
+                KC.toast("Maximum supported word count is 1500.", "error");
+                wordsInput.focus();
                 return;
             }
 
-            function getQueryParam(param) {
-        var urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
+            createBtn.disabled = true;
+            showLoading();
 
-    // Get the keyword and number of words from URL parameters
-
-
-
-            var url, data;
-            url = `${window.location.origin}/create_blog_post/`;
-            data = JSON.stringify({
-                article_text: articleText,
-                num_words: numWords
-            });
-            console.log(data)
-
-            $.ajax({
-                url: url,
+            fetch(window.location.origin + "/create_blog_post/", {
                 method: "POST",
-                contentType: "application/json",
-                data: data,
-                success: function (response) {
-                  //   var formattedResponse = response.blog_post.replace(/\n/g, "<br>");
-                    var formattedResponse = response.blog_post;
-                    console.log(formattedResponse);
-                    formattedResponse = formattedResponse.split("\n").join("<br>");
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ article_text: topic, num_words: count })
+            })
+                .then(function (res) {
+                    if (!res.ok) { throw new Error("Request failed (" + res.status + ")"); }
+                    return res.json();
+                })
+                .then(function (data) {
+                    stopLoading();
+                    createBtn.disabled = false;
+                    renderBlog(data.blog_post || "");
+                    KC.toast("Blog post ready!");
+                })
+                .catch(function () {
+                    stopLoading();
+                    createBtn.disabled = false;
+                    content.innerHTML =
+                        '<div class="empty-state"><div class="empty-icon">' +
+                        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+                        '</div><p>Something went wrong while generating your blog.<br>Please try again.</p></div>';
+                    KC.toast("Could not generate the blog. Please try again.", "error");
+                });
+        }
 
+        createBtn.addEventListener("click", generate);
+        topicInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") { e.preventDefault(); generate(); }
+        });
+        wordsInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") { e.preventDefault(); generate(); }
+        });
 
-                    $("#keyword-list").html(formattedResponse);
-                    $("#blockUi").hide();
-                    $("#article-text").val("");
-                    $("#num-words").val("");
-                    $("#copy-btn").show();
-                    $("body").css("overflow", "auto");
-
-                },
-                error: function() {
-                    alert("Error extracting keywords. Please try again.");
-                    window.location.href = '/blog';
-                    $("body").css("overflow", "auto");
-
-                }
+        copyBtn.addEventListener("click", function () {
+            if (!plainText) return;
+            KC.copyText(plainText).then(function () {
+                copyIcon.innerHTML = CHECK_SVG;
+                copyLabel.textContent = "Copied";
+                KC.toast("Blog post copied to clipboard.");
+                setTimeout(function () {
+                    copyIcon.innerHTML = COPY_SVG;
+                    copyLabel.textContent = "Copy";
+                }, 2000);
             });
         });
-        $("#article-text").keydown(function(event) {
-              if (event.key === "Enter") {
-                    event.preventDefault(); // Prevent default form submission behavior
-                    $("#extract-keywords").click(); // Trigger the button click
-              }
-        });
 
-        // Copy functionality
-        $("#copy-btn").click(function() {
-            var content = $("#keyword-list").html();
-            var textContent = content.replace(/<br\s*\/?>/gi, " ");
-            var tempInput = $("<textarea>");
-            $("body").append(tempInput);
-            tempInput.val(textContent).select();
-            document.execCommand("copy");
-            tempInput.remove();
-
-            // Change image and text on copy
-            $("#copy-btn img").attr("src", "./static/images/check.png");
-            $("#copy-btn span").text("Copied");
-
-            // Revert back to original 'copy.png' after 2 seconds
-            setTimeout(() => {
-                $("#copy-btn img").attr("src", "./static/images/copy.png");
-                $("#copy-btn span").text("copy");
-            }, 2000);
-        });
-
-           // Function to get query parameters from URL
-    function getQueryParam(param) {
-        var urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(param);
-    }
-
-    // Get the keyword and number of words from URL parameters
-    var keyword = getQueryParam("article_text");
-    var numWords = getQueryParam("wordCount");
-    var bolean = getQueryParam("bolean");
-
-    // Pre-populate the inputs with values from the URL
-    if (keyword) {
-        $("#article-text").val(keyword);
-    }
-    if (numWords) {
-        $("#num-words").val(numWords);
-    }
-    if (bolean) {
-        if (bolean === "True") {  // Check if bolean is true
-        // Trigger the button click event to create the blog post
-        console.log(bolean)
-        $("#extract-keywords").click();
-
-    }
-    }
-
+        // Auto-generate when arriving from the keyword finder
+        // (supports the legacy "bolean" param for old links)
+        var params = new URLSearchParams(window.location.search);
+        var kw = params.get("article_text");
+        var wc = params.get("wordCount");
+        var auto = params.get("bolean") || params.get("auto");
+        if (kw) { topicInput.value = kw; }
+        if (wc) { wordsInput.value = wc; }
+        if (auto === "True" || auto === "true" || auto === "1") { generate(); }
+    });
     </script>
 </body>
 </html>

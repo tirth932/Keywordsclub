@@ -76,9 +76,9 @@ async def root():
 
 @app.get("/", response_class=HTMLResponse)
 async def read_index():
-    index_file = views_path / "keyword demo.html"
+    index_file = views_path / "index.html"
     if index_file.exists():
-        return index_file.read_text()
+        return index_file.read_text(encoding="utf-8")
     return "<h1>index.html not found</h1>"
 
 
@@ -86,7 +86,7 @@ async def read_index():
 async def read_blog():
     blog_file = views_path / "blog.html"
     if blog_file.exists():
-        return blog_file.read_text()
+        return blog_file.read_text(encoding="utf-8")
     return "<h1>blog.html not found</h1>"
 
 

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keywords Club — AI Keyword Research Tool</title>
+    <meta name="description" content="Keywords Club is a free AI-powered keyword research tool. Discover high-impact keywords and generate SEO-ready blog posts in seconds.">
+    <meta property="og:title" content="Keywords Club — AI Keyword Research Tool">
+    <meta property="og:description" content="Discover high-impact keywords and generate SEO-ready blog posts with AI.">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="./static/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./static/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EZZ4L7ES3N"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EZZ4L7ES3N');
+    </script>
+    <script src="./static/app.js" defer></script>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="grid-overlay"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <nav class="nav">
+        <div class="container nav-inner">
+            <a href="/" class="nav-logo" aria-label="Keywords Club home">
+                <img src="./static/images/white.svg" alt="Keywords Club">
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">Keyword Finder</a>
+                <a href="/blog" class="nav-link">Blog Generator</a>
+                <a href="/blog" class="nav-cta">Create a Blog</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-badge reveal"><span class="pulse-dot"></span> Powered by AI &middot; Free forever</div>
+            <h1 class="reveal">Find keywords that<br><span class="grad-text">actually rank</span></h1>
+            <p class="sub reveal delay-1">Type any topic and let our AI surface high-impact keyword ideas for your site content, ad campaigns, and blogs — in seconds.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="workspace">
+            <!-- Search panel -->
+            <section class="glass panel reveal">
+                <h2 class="panel-title">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#pg1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <defs><linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    Free Keyword Tool
+                </h2>
+                <p class="panel-desc">Discover new keywords and performance ideas to use in your site content, Google Ads campaigns and more.</p>
+
+                <label class="field-label" for="article-text">Seed keyword or topic</label>
+                <div class="input-wrap">
+                    <input type="text" id="article-text" name="article-text" placeholder="e.g. electric cars, home workouts, coffee brewing…" autocomplete="off">
+                </div>
+                <button class="btn-glow" id="extract-keywords" style="margin-top: 22px; align-self: flex-end;">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"/></svg>
+                    Find My Keywords
+                </button>
+            </section>
+
+            <!-- Results panel -->
+            <section class="glass panel reveal delay-1" id="keyword-div">
+                <div class="results-head">
+                    <h2 class="panel-title" style="margin-bottom: 0;">Suggested Keywords</h2>
+                    <span class="results-count" id="results-count"></span>
+                </div>
+                <div class="results-body" id="results-body">
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                        <p>Your keyword ideas will appear here.<br>Enter a topic to get started.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- About / features -->
+    <section class="about-sec">
+        <div class="container">
+            <div class="section-heading reveal">
+                <h2>About <span class="grad-text">Keywords Club</span></h2>
+                <p>The ultimate keyword suggestion tool designed to elevate your SEO game — whether you're a content creator, digital marketer, or business owner.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="glass feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L14.5 9.5 L22 12 L14.5 14.5 L12 22 L9.5 14.5 L2 12 L9.5 9.5 Z"/></svg>
+                    </div>
+                    <h3>AI-Powered Suggestions</h3>
+                    <p>Advanced language models analyze your topic and surface relevant, high-impact keywords in seconds — no spreadsheets required.</p>
+                </div>
+                <div class="glass feature-card reveal delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                    </div>
+                    <h3>Instant Blog Drafts</h3>
+                    <p>Pick any suggested keyword and generate a well-structured, SEO-friendly blog post at your chosen word count with a single click.</p>
+                </div>
+                <div class="glass feature-card reveal delay-2">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    </div>
+                    <h3>Fast &amp; Free</h3>
+                    <p>Say goodbye to keyword research frustrations. No sign-up, no paywall — just type, discover, and create. Let us do the heavy lifting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            &copy; <span id="year"></span> <span class="grad-text">Keywords Club</span> — AI keyword research &amp; content generation
+        </div>
+    </footer>
+
+    <!-- Word-count modal -->
+    <div class="modal-backdrop" id="word-modal">
+        <div class="glass modal-card">
+            <h3>Create a blog post</h3>
+            <p>Generating a blog on <span class="modal-kw" id="selected-keyword"></span>. How many words should it be?</p>
+            <label class="field-label" for="word-count-input">Word count (max 1500)</label>
+            <div class="input-wrap">
+                <input type="number" id="word-count-input" min="1" max="1500" placeholder="e.g. 800">
+            </div>
+            <div class="modal-hint" id="modal-hint">Press Enter to generate.</div>
+            <div class="modal-actions">
+                <button class="btn-ghost" id="modal-cancel">Cancel</button>
+                <button class="btn-glow" id="generate-blog" style="padding: 11px 26px; font-size: 15px;">Generate</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        var input = document.getElementById("article-text");
+        var findBtn = document.getElementById("extract-keywords");
+        var resultsBody = document.getElementById("results-body");
+        var resultsCount = document.getElementById("results-count");
+        var modal = document.getElementById("word-modal");
+        var modalKeywordEl = document.getElementById("selected-keyword");
+        var wordInput = document.getElementById("word-count-input");
+        var modalHint = document.getElementById("modal-hint");
+        var currentKeyword = "";
+        var stopStatus = null;
+
+        var STATUS_MESSAGES = [
+            "Analyzing search intent…",
+            "Scanning topic clusters…",
+            "Ranking keyword ideas…",
+            "Polishing suggestions…"
+        ];
+
+        var COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        var PEN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+        var CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+        function showLoading() {
+            resultsBody.innerHTML =
+                '<div class="status-text"><span class="spin-ring"></span><span id="status-msg"></span></div>' +
+                '<div class="skeleton-row"></div><div class="skeleton-row"></div><div class="skeleton-row"></div>' +
+                '<div class="skeleton-row"></div><div class="skeleton-row"></div>';
+            stopStatus = KC.cycleStatus(document.getElementById("status-msg"), STATUS_MESSAGES);
+        }
+
+        function stopLoading() {
+            if (stopStatus) { stopStatus(); stopStatus = null; }
+        }
+
+        function renderKeywords(raw) {
+            var keywords = raw.split("\n")
+                .map(function (k) { return k.replace(/^-+\s*/, "").trim(); })
+                .filter(function (k) { return k.length > 0; });
+            keywords = Array.from(new Set(keywords));
+
+            resultsCount.textContent = keywords.length + " ideas";
+            var grid = document.createElement("div");
+            grid.className = "chip-grid";
+
+            keywords.forEach(function (kw, i) {
+                var chip = document.createElement("span");
+                chip.className = "chip";
+                chip.style.animationDelay = (i * 0.06) + "s";
+
+                var label = document.createElement("span");
+                label.textContent = kw;
+                chip.appendChild(label);
+
+                var actions = document.createElement("span");
+                actions.className = "chip-actions";
+
+                var penBtn = document.createElement("button");
+                penBtn.className = "icon-btn pen";
+                penBtn.title = "Create a blog post on \u201C" + kw + "\u201D";
+                penBtn.innerHTML = PEN_ICON;
+                penBtn.addEventListener("click", function () { openModal(kw); });
+
+                var copyBtn = document.createElement("button");
+                copyBtn.className = "icon-btn";
+                copyBtn.title = "Copy keyword";
+                copyBtn.innerHTML = COPY_ICON;
+                copyBtn.addEventListener("click", function () {
+                    KC.copyText(kw).then(function () {
+                        copyBtn.innerHTML = CHECK_ICON;
+                        KC.toast("Copied \u201C" + kw + "\u201D");
+                        setTimeout(function () { copyBtn.innerHTML = COPY_ICON; }, 1600);
+                    });
+                });
+
+                actions.appendChild(penBtn);
+                actions.appendChild(copyBtn);
+                chip.appendChild(actions);
+                grid.appendChild(chip);
+            });
+
+            resultsBody.innerHTML = "";
+            resultsBody.appendChild(grid);
+        }
+
+        function findKeywords() {
+            var topic = input.value.trim();
+            if (!topic) {
+                KC.toast("Please enter a keyword or topic first.", "error");
+                input.focus();
+                return;
+            }
+            findBtn.disabled = true;
+            resultsCount.textContent = "";
+            showLoading();
+
+            fetch(window.location.origin + "/extract_keywords", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ article_text: topic, num_words: "" })
+            })
+                .then(function (res) {
+                    if (!res.ok) { throw new Error("Request failed (" + res.status + ")"); }
+                    return res.json();
+                })
+                .then(function (data) {
+                    stopLoading();
+                    findBtn.disabled = false;
+                    renderKeywords(data.keywords || "");
+                })
+                .catch(function () {
+                    stopLoading();
+                    findBtn.disabled = false;
+                    resultsBody.innerHTML =
+                        '<div class="empty-state"><div class="empty-icon">' +
+                        '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+                        '</div><p>Something went wrong while fetching keywords.<br>Please try again.</p></div>';
+                    KC.toast("Could not fetch keywords. Please try again.", "error");
+                });
+        }
+
+        function openModal(keyword) {
+            currentKeyword = keyword;
+            modalKeywordEl.textContent = "\u201C" + keyword + "\u201D";
+            modalHint.textContent = "Press Enter to generate.";
+            modalHint.classList.remove("error");
+            wordInput.value = "";
+            modal.classList.add("open");
+            setTimeout(function () { wordInput.focus(); }, 150);
+        }
+
+        function closeModal() {
+            modal.classList.remove("open");
+        }
+
+        function generateBlog() {
+            var count = parseInt(wordInput.value, 10);
+            if (!count || count <= 0) {
+                modalHint.textContent = "Please enter a valid positive number of words.";
+                modalHint.classList.add("error");
+                wordInput.focus();
+                return;
+            }
+            if (count > 1500) {
+                modalHint.textContent = "Maximum supported word count is 1500.";
+                modalHint.classList.add("error");
+                wordInput.value = "";
+                wordInput.focus();
+                return;
+            }
+            window.location.href = "blog?article_text=" + encodeURIComponent(currentKeyword) +
+                "&wordCount=" + count + "&bolean=True";
+        }
+
+        findBtn.addEventListener("click", findKeywords);
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") { e.preventDefault(); findKeywords(); }
+        });
+
+        document.getElementById("generate-blog").addEventListener("click", generateBlog);
+        document.getElementById("modal-cancel").addEventListener("click", closeModal);
+        wordInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") { e.preventDefault(); generateBlog(); }
+        });
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) { closeModal(); }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && modal.classList.contains("open")) { closeModal(); }
+        });
+    });
+    </script>
+</body>
+</html>
